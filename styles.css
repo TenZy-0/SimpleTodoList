@@ -1,0 +1,739 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* ---------- THEMES ---------- */
+
+body{                               /* default = dark */
+    --bg:#081126;
+    --card:#1e293b;
+    --item:#334155;
+    --input:#0f172a;
+    --text:#ffffff;
+    --muted:#94a3b8;
+    --accent:#58b3d3;
+    --green:#71ff8c;
+    color-scheme:dark;
+}
+
+body[data-theme="light"]{
+    --bg:#f3f4f6;
+    --card:#ffffff;
+    --item:#e5e7eb;
+    --input:#f9fafb;
+    --text:#111827;
+    --muted:#6b7280;
+    --accent:#3b9ec7;
+    --green:#22c55e;
+    color-scheme:light;
+}
+
+body[data-theme="ocean"]{
+    --bg:#0a2540;
+    --card:#133b5c;
+    --item:#1d5278;
+    --input:#0a2540;
+    --text:#eaf6ff;
+    --muted:#9fc3dd;
+    --accent:#38bdf8;
+    --green:#5eead4;
+}
+
+body[data-theme="sunset"]{
+    --bg:#2b1330;
+    --card:#4a1f4f;
+    --item:#6b2d5c;
+    --input:#2b1330;
+    --text:#fff1f2;
+    --muted:#e9b5c8;
+    --accent:#fb7185;
+    --green:#fcd34d;
+}
+
+/* ---------- BASE ---------- */
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI",sans-serif;
+    padding:20px;
+}
+
+/* ---------- PAGE GRID (matches the sketch) ----------
+
+        |  welcome  |      topright (date/theme/flipclock)  |
+        |  gif      |      stats (4 boxes)                   |
+        |  events   |      todo                              |
+*/
+
+.dashboard{
+    display:grid;
+
+    grid-template-columns:
+        minmax(260px,1fr)
+        2.2fr;
+
+    grid-template-rows:
+        minmax(170px,auto)
+        minmax(190px,auto)
+        minmax(0,1fr);
+
+    grid-template-areas:
+        "welcome topright"
+        "gif     stats"
+        "events  todo";
+
+    gap:20px;
+
+    height:calc(100vh - 40px);
+}
+
+.dashboard > *{
+    min-width:0;
+    min-height:0;
+}
+
+/* shared card look */
+
+.welcomeCard,
+.topRight,
+.gifCard,
+.card,
+.eventsCard,
+.todoCard{
+    background:var(--card);
+    border-radius:25px;
+    padding:20px;
+}
+
+/* ---------- ROW 1 LEFT: WELCOME + MUSIC ---------- */
+
+.welcomeCard{
+    grid-area:welcome;
+
+    background:linear-gradient(
+        135deg,
+        var(--accent),
+        color-mix(in srgb, var(--accent) 65%, black)
+    );
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:14px;
+}
+
+.welcomeCard h1{
+    font-size:clamp(24px,2.4vw,36px);
+}
+
+.musicRow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.musicRow label{
+    font-weight:600;
+}
+
+.musicRow input{
+    flex:1;
+    min-width:0;
+
+    background:rgba(0,0,0,.25);
+    color:white;
+    border:none;
+}
+
+.musicRow input::placeholder{
+    color:rgba(255,255,255,.7);
+}
+
+.ytHolder{
+    position:absolute;
+    left:-9999px;
+    top:0;
+    width:200px;
+    height:200px;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+#musicBtn{
+    background:rgba(0,0,0,.35);
+    width:44px;
+    padding:12px 0;
+}
+
+#musicStatus{
+    min-height:1em;
+    opacity:.9;
+}
+
+/* ---------- ROW 1 RIGHT: DATE + THEME + FLIP CLOCK ---------- */
+
+.topRight{
+    grid-area:topright;
+
+    display:grid;
+    grid-template-columns:
+        minmax(0,1fr)
+        minmax(0,1.5fr);
+
+    gap:20px;
+    align-items:center;
+}
+
+.dateTheme{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.label{
+    display:block;
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:4px;
+}
+
+.dateText{
+    font-size:clamp(24px,2.4vw,38px);
+    font-weight:700;
+    color:var(--green);
+    font-variant-numeric:tabular-nums;
+}
+
+.dayText{
+    font-size:14px;
+    color:var(--muted);
+}
+
+.themeBlock select{
+    width:100%;
+}
+
+/* ---------- FLIP CLOCK ---------- */
+
+.flipClock{
+    --h:clamp(44px,min(8.5vh,5vw),84px);   /* height of one digit card */
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    padding:8px;
+
+    border:2px solid rgba(127,127,127,.35);
+    border-radius:18px;
+}
+
+.flipRow{
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.colon{
+    font-size:calc(var(--h) * .5);
+    font-weight:700;
+    color:var(--green);
+    padding:0 2px;
+}
+
+.clockControls{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    color:var(--muted);
+}
+
+#formatBtn{
+    padding:4px 12px;
+    font-size:13px;
+}
+
+.digit{
+    position:relative;
+
+    width:calc(var(--h) * .7);
+    height:var(--h);
+
+    perspective:400px;
+
+    font-size:calc(var(--h) * .78);
+    font-weight:700;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+/* each digit = 2 static halves + 2 flaps that flip */
+
+.half{
+    position:absolute;
+    left:0;
+    width:100%;
+    height:50%;
+
+    overflow:hidden;
+
+    background:#171717;
+    color:var(--green);
+}
+
+.half span{
+    position:absolute;
+    left:0;
+    width:100%;
+    height:var(--h);
+
+    line-height:var(--h);
+    text-align:center;
+}
+
+.upper,
+.flapTop{
+    top:0;
+    border-radius:8px 8px 0 0;
+}
+
+.lower,
+.flapBottom{
+    bottom:0;
+    border-radius:0 0 8px 8px;
+}
+
+.upper span,
+.flapTop span{
+    top:0;
+}
+
+.lower span,
+.flapBottom span{
+    bottom:0;
+}
+
+.flap{
+    display:none;
+    z-index:2;
+    backface-visibility:hidden;
+}
+
+.flapTop{
+    transform-origin:bottom center;
+}
+
+.flapBottom{
+    transform-origin:top center;
+    transform:rotateX(90deg);
+}
+
+.digit.flipping .flap{
+    display:block;
+}
+
+.digit.flipping .flapTop{
+    animation:flipTop .3s ease-in forwards;
+}
+
+.digit.flipping .flapBottom{
+    animation:flipBottom .3s ease-out .3s forwards;
+}
+
+@keyframes flipTop{
+    to{ transform:rotateX(-90deg); }
+}
+
+@keyframes flipBottom{
+    to{ transform:rotateX(0deg); }
+}
+
+/* the line across the middle of the card */
+
+.digit::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:50%;
+    height:2px;
+    margin-top:-1px;
+    background:#000;
+    z-index:5;
+}
+
+/* ---------- ROW 2 LEFT: GIF ---------- */
+
+.gifCard{
+    grid-area:gif;
+
+    position:relative;
+    padding:0;
+    overflow:hidden;
+}
+
+.gifCard img{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+#gifEditBtn{
+    position:absolute;
+    top:10px;
+    right:10px;
+    z-index:4;                 /* always above the panel so it can close it */
+
+    padding:6px 12px;
+
+    background:rgba(0,0,0,.55);
+}
+
+.gifPanel{
+    position:absolute;
+    inset:0;                   /* fills the GIF box */
+    z-index:3;
+
+    overflow:auto;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:8px;
+
+    padding:14px;
+
+    background:rgba(0,0,0,.82);
+    color:white;
+}
+
+.gifPanel[hidden]{
+    display:none;
+}
+
+.gifBtns{
+    display:flex;
+    gap:8px;
+}
+
+.gifBtns button{
+    flex:1;
+    padding:8px;
+}
+
+#gifResetBtn{
+    background:rgba(255,255,255,.2);
+}
+
+#gifStatus{
+    min-height:1em;
+}
+
+/* ---------- ROW 2 RIGHT: STATS ---------- */
+
+.stats{
+    grid-area:stats;
+
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr 1fr;
+    gap:20px;
+}
+
+.card{
+    text-align:center;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:8px;
+}
+
+.card h3{
+    font-size:18px;
+}
+
+.num{
+    font-size:clamp(32px,4vw,50px);
+    font-weight:bold;
+    color:var(--green);
+}
+
+.overdueCard .num{
+    color:#ef4444;
+}
+
+/* progress */
+
+.bar{
+    width:100%;
+    height:12px;
+
+    background:rgba(127,127,127,.3);
+    border-radius:10px;
+
+    overflow:hidden;
+}
+
+#progressFill{
+    height:100%;
+    width:0;
+
+    background:var(--green);
+
+    transition:width .4s;
+}
+
+#progressMsg{
+    color:var(--muted);
+    font-size:15px;
+}
+
+/* ---------- ROW 3: TODO + EVENTS ---------- */
+
+.todoCard{
+    grid-area:todo;
+}
+
+.eventsCard{
+    grid-area:events;
+}
+
+.todoCard,
+.eventsCard{
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* todo form */
+
+.task-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+    margin:15px 0 5px;
+}
+
+.task-when{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:10px;
+}
+
+.task-when label{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+
+    font-size:12px;
+    color:var(--muted);
+}
+
+#taskError{
+    color:#ef4444;
+    min-height:1em;
+}
+
+/* event form */
+
+.event-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+    margin:15px 0;
+}
+
+/* lists */
+
+#taskList,
+#eventList{
+    flex:1;
+    overflow-y:auto;
+    list-style:none;
+}
+
+#taskList li,
+#eventList li{
+    background:var(--item);
+
+    padding:12px;
+    border-radius:10px;
+    margin-top:10px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+}
+
+/* task row:  • cook   date: ....   time: 00:00-00:10 */
+
+#taskList li::before{
+    content:"•";
+    font-size:22px;
+    line-height:1;
+}
+
+.taskName{
+    flex:1;
+    min-width:90px;
+    font-weight:600;
+    word-break:break-word;
+}
+
+.taskMeta{
+    font-size:14px;
+    color:var(--muted);
+    white-space:nowrap;
+}
+
+.taskBtns{
+    display:flex;
+    gap:6px;
+}
+
+#taskList li.completed .taskName{
+    text-decoration:line-through;
+    opacity:.55;
+}
+
+#taskList li.overdue{
+    border-left:4px solid #ef4444;
+}
+
+.tag{
+    background:#ef4444;
+    color:white;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:20px;
+}
+
+#eventList li span{
+    word-break:break-word;
+}
+
+/* ---------- INPUTS + BUTTONS ---------- */
+
+input,
+select{
+    padding:12px;
+
+    border:1px solid rgba(127,127,127,.3);
+    border-radius:10px;
+
+    background:var(--input);
+    color:var(--text);
+
+    font:inherit;
+}
+
+.task-form input[type="text"]{
+    width:100%;
+}
+
+button{
+    padding:12px;
+
+    border:none;
+    border-radius:10px;
+
+    background:var(--accent);
+    color:white;
+
+    cursor:pointer;
+    font:inherit;
+}
+
+button:hover{
+    filter:brightness(1.1);
+}
+
+.complete{
+    background:#22c55e;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+.taskBtns button,
+#eventList button{
+    padding:8px 12px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:1000px){
+
+    html,
+    body{
+        height:auto;
+        overflow:auto;
+    }
+
+    .dashboard{
+        height:auto;
+
+        grid-template-columns:1fr;
+        grid-template-rows:auto;
+
+        grid-template-areas:
+            "welcome"
+            "topright"
+            "gif"
+            "stats"
+            "todo"
+            "events";
+    }
+
+    .topRight{
+        grid-template-columns:1fr;
+    }
+
+    .flipClock{
+        --h:56px;
+    }
+
+    .gifCard{
+        height:200px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .progressCard,
+    .pendingCard{
+        grid-column:1 / -1;
+    }
+
+    .todoCard{
+        min-height:380px;
+    }
+
+    .eventsCard{
+        min-height:320px;
+    }
+}

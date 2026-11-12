@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>My Tasks Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- ROW 1 LEFT: WELCOME + MUSIC -->
+    <section class="welcomeCard">
+
+        <h1>Welcome Tenzy</h1>
+
+        <div class="musicRow">
+            <label for="musicInput">Music:</label>
+
+            <input
+                type="text"
+                id="musicInput"
+                placeholder="Paste a YouTube or .mp3 link"
+            >
+
+            <button id="musicBtn" type="button" title="Play / pause">▶</button>
+        </div>
+
+        <small id="musicStatus"></small>
+
+        <audio id="audio" loop></audio>
+
+        <!-- hidden YouTube player (only the sound is used) -->
+        <div class="ytHolder"><div id="ytPlayer"></div></div>
+
+    </section>
+
+    <!-- ROW 1 RIGHT: DATE + THEME + FLIP CLOCK -->
+    <section class="topRight">
+
+        <div class="dateTheme">
+
+            <div class="dateBlock">
+                <span class="label">Date:</span>
+                <div id="dateText" class="dateText">00/00/0000</div>
+                <div id="dayText" class="dayText"></div>
+            </div>
+
+            <div class="themeBlock">
+                <label class="label" for="themeSelect">Theme:</label>
+
+                <select id="themeSelect">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="ocean">Ocean</option>
+                    <option value="sunset">Sunset</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="flipClock">
+
+            <div class="flipRow">
+                <div class="digit"></div>
+                <div class="digit"></div>
+                <span class="colon">:</span>
+                <div class="digit"></div>
+                <div class="digit"></div>
+                <span class="colon">:</span>
+                <div class="digit"></div>
+                <div class="digit"></div>
+            </div>
+
+            <div class="clockControls">
+                <span id="ampm"></span>
+                <button id="formatBtn" type="button" title="Switch 12h / 24h">24h</button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ROW 2 LEFT: GIF -->
+    <section class="gifCard">
+
+        <img id="gifImg" src="images/profile.gif" alt="GIF">
+
+        <button id="gifEditBtn" type="button" title="Change GIF">✎</button>
+
+        <div id="gifPanel" class="gifPanel" hidden>
+
+            <strong>Change GIF</strong>
+
+            <input type="text" id="gifInput" placeholder="Paste a GIF link">
+
+            <div class="gifBtns">
+                <button id="gifUseBtn" type="button">Use link</button>
+                <button id="gifUploadBtn" type="button">Upload</button>
+                <button id="gifResetBtn" type="button">Reset</button>
+            </div>
+
+            <small id="gifStatus"></small>
+
+            <input type="file" id="gifFile" accept="image/*" hidden>
+
+        </div>
+
+    </section>
+
+    <!-- ROW 2 RIGHT: PROGRESS / OVERDUE / COMPLETED / PENDING -->
+    <section class="stats">
+
+        <div class="card progressCard">
+            <h3>Progress: <span id="progressPct">0%</span></h3>
+
+            <div class="bar">
+                <div id="progressFill"></div>
+            </div>
+
+            <p id="progressMsg">Keep going</p>
+        </div>
+
+        <div class="card overdueCard">
+            <h3>Overdue</h3>
+            <p class="num" id="overdueTasks">0</p>
+        </div>
+
+        <div class="card completeCard">
+            <h3>Completed</h3>
+            <p class="num" id="completedTasks">0</p>
+        </div>
+
+        <div class="card pendingCard">
+            <h3>Pending</h3>
+            <p class="num" id="pendingTasks">0</p>
+        </div>
+
+    </section>
+
+    <!-- ROW 3 LEFT: EVENT PLANNER -->
+    <section class="eventsCard">
+
+        <h2>Event Planner</h2>
+
+        <div class="event-form">
+            <input type="date" id="eventDate">
+
+            <input type="text" id="eventText" placeholder="Event name">
+
+            <button id="addEventBtn" type="button">Add Event</button>
+        </div>
+
+        <ul id="eventList"></ul>
+
+    </section>
+
+    <!-- ROW 3 RIGHT: TODO LIST -->
+    <section class="todoCard">
+
+        <h2>Todo List</h2>
+
+        <div class="task-form">
+
+            <input type="text" id="taskInput" placeholder="Enter task...">
+
+            <div class="task-when">
+                <label>Date
+                    <input type="date" id="taskDate">
+                </label>
+
+                <label>From
+                    <input type="time" id="taskStart">
+                </label>
+
+                <label>To
+                    <input type="time" id="taskEnd">
+                </label>
+
+                <button id="addTaskBtn" type="button">Add</button>
+            </div>
+
+            <small id="taskError"></small>
+
+        </div>
+
+        <ul id="taskList"></ul>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
