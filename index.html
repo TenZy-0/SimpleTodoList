@@ -11,36 +11,93 @@
 
 <div class="dashboard">
 
-    <!-- ROW 1 LEFT: WELCOME + MUSIC -->
     <section class="welcomeCard">
 
-        <h1>Welcome Tenzy</h1>
+        <h1 class="welcomeTitle">
+            Welcome
+            <input type="text" id="nameInput" class="nameInput" maxlength="20"
+                   value="Tenzy" spellcheck="false" aria-label="Your name (click to edit)">
+            <span class="editHint" title="Click the name to edit it">✎</span>
+        </h1>
 
-        <div class="musicRow">
-            <label for="musicInput">Music:</label>
+        <div class="charRow">
 
-            <input
-                type="text"
-                id="musicInput"
-                placeholder="Paste a YouTube or .mp3 link"
-            >
+            <button id="catBtn" class="catBox" type="button" title="Click me!">
+                <img id="catImg" src="images/cat/cat2.png" alt="Your cat">
+            </button>
 
-            <button id="musicBtn" type="button" title="Play / pause">▶</button>
+            <div class="quoteBox">
+                <p id="quoteText">Hi!</p>
+            </div>
+
         </div>
 
-        <small id="musicStatus"></small>
+        <div class="themeRow">
+            <label for="themeSelect">Theme:</label>
+
+            <select id="themeSelect">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+                <option value="ocean">Ocean</option>
+                <option value="sunset">Sunset</option>
+                <option value="custom">Custom</option>
+            </select>
+
+            <button id="themeEditBtn" type="button" title="Make your own theme">Customize</button>
+        </div>
+
+    </section>
+
+    <section class="musicCard">
+
+        <div class="musicTop">
+            <input type="text" id="musicInput"
+                   placeholder="Paste a YouTube video, playlist or .mp3 link">
+        </div>
+
+        <div class="musicBody">
+
+            <div class="art">
+                <span class="note">♪</span>
+                <img id="musicArtImg" alt="" hidden>
+            </div>
+
+            <div class="musicInfo">
+
+                <div id="musicTitle" class="musicTitle">Nothing playing</div>
+                <div id="musicSub" class="musicSub">Paste a link, then press play</div>
+
+                <div class="seekRow">
+                    <span id="timeNow">0:00</span>
+                    <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Seek">
+                    <span id="timeTotal">0:00</span>
+                </div>
+
+                <div class="controls">
+                    <button id="prevBtn" class="iconBtn" data-icon="prev" type="button" title="Previous" disabled></button>
+                    <button id="musicBtn" class="iconBtn playBtn" data-icon="play" type="button" title="Play / pause"></button>
+                    <button id="nextBtn" class="iconBtn" data-icon="next" type="button" title="Next" disabled></button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="volRow">
+            <span>Vol:</span>
+            <button id="muteBtn" class="iconBtn small" data-icon="vol" type="button" title="Mute"></button>
+            <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume">
+        </div>
 
         <audio id="audio" loop></audio>
 
-        <!-- hidden YouTube player (only the sound is used) -->
         <div class="ytHolder"><div id="ytPlayer"></div></div>
 
     </section>
 
-    <!-- ROW 1 RIGHT: DATE + THEME + FLIP CLOCK -->
-    <section class="topRight">
+    <section class="clockCard">
 
-        <div class="dateTheme">
+        <div class="clockHead">
 
             <div class="dateBlock">
                 <span class="label">Date:</span>
@@ -48,21 +105,19 @@
                 <div id="dayText" class="dayText"></div>
             </div>
 
-            <div class="themeBlock">
-                <label class="label" for="themeSelect">Theme:</label>
-
-                <select id="themeSelect">
-                    <option value="dark">Dark</option>
-                    <option value="light">Light</option>
-                    <option value="ocean">Ocean</option>
-                    <option value="sunset">Sunset</option>
+            <label class="modeBlock">
+                <span class="label">Mode:</span>
+                <select id="modeSelect">
+                    <option value="clock">Clock</option>
+                    <option value="stopwatch">Stopwatch</option>
+                    <option value="timer">Timer</option>
+                    <option value="session">Session</option>
                 </select>
-            </div>
+            </label>
 
         </div>
 
-        <div class="flipClock">
-
+        <div class="flipClock" id="flipClock">
             <div class="flipRow">
                 <div class="digit"></div>
                 <div class="digit"></div>
@@ -73,44 +128,68 @@
                 <div class="digit"></div>
                 <div class="digit"></div>
             </div>
+        </div>
 
-            <div class="clockControls">
-                <span id="ampm"></span>
-                <button id="formatBtn" type="button" title="Switch 12h / 24h">24h</button>
+        <div class="sessionRow invisible" id="sessionRow">
+            <span>Progress</span>
+            <div class="sessionBar"><div id="sessionFill"></div></div>
+            <span id="sessionPct">0%</span>
+        </div>
+
+        <div class="clockFoot">
+
+            <span id="clockLabel" class="clockLabel"></span>
+
+            <div class="clockBtns">
+                <button id="clockStartBtn" class="smallBtn" type="button" hidden>Start</button>
+                <button id="clockResetBtn" class="smallBtn ghost" type="button" hidden>Reset</button>
+                <button id="clockEditBtn" class="smallBtn ghost" type="button" title="Edit" hidden>✎</button>
+                <button id="formatBtn" class="smallBtn ghost" type="button" title="Switch 12h / 24h">24h</button>
             </div>
 
         </div>
 
     </section>
 
-    <!-- ROW 2 LEFT: GIF -->
-    <section class="gifCard">
+    <section class="mediaCard">
 
-        <img id="gifImg" src="images/profile.gif" alt="GIF">
+        <img id="mediaImg" src="images/profile.gif" alt="GIF">
 
-        <button id="gifEditBtn" type="button" title="Change GIF">✎</button>
+        <video id="mediaVideo" loop muted playsinline hidden></video>
 
-        <div id="gifPanel" class="gifPanel" hidden>
+        <div id="mediaYTWrap" class="ytCover" hidden>
+            <div class="ytInner"><div id="mediaYTPlayer"></div></div>
+        </div>
 
-            <strong>Change GIF</strong>
+        <div id="mediaEmpty" class="mediaEmpty" hidden>
+            Click ✎ to add a GIF or a video
+        </div>
 
-            <input type="text" id="gifInput" placeholder="Paste a GIF link">
+        <div class="mediaBtns">
+            <button id="mediaMuteBtn" type="button" data-icon="mute" title="Unmute / mute" hidden></button>
+            <button id="mediaEditBtn" type="button" title="Change GIF / video">✎</button>
+        </div>
 
-            <div class="gifBtns">
-                <button id="gifUseBtn" type="button">Use link</button>
-                <button id="gifUploadBtn" type="button">Upload</button>
-                <button id="gifResetBtn" type="button">Reset</button>
+        <div id="mediaPanel" class="mediaPanel" hidden>
+
+            <strong>Change GIF / video</strong>
+
+            <input type="text" id="mediaInput" placeholder="Paste a GIF, image, video or YouTube link">
+
+            <div class="panelBtns">
+                <button id="mediaUseBtn" type="button">Use link</button>
+                <button id="mediaUploadBtn" type="button">Upload</button>
+                <button id="mediaResetBtn" type="button">Reset</button>
             </div>
 
-            <small id="gifStatus"></small>
+            <small id="mediaStatus"></small>
 
-            <input type="file" id="gifFile" accept="image/*" hidden>
+            <input type="file" id="mediaFile" accept="image/*,video/*" hidden>
 
         </div>
 
     </section>
 
-    <!-- ROW 2 RIGHT: PROGRESS / OVERDUE / COMPLETED / PENDING -->
     <section class="stats">
 
         <div class="card progressCard">
@@ -129,7 +208,7 @@
         </div>
 
         <div class="card completeCard">
-            <h3>Completed</h3>
+            <h3>Complete</h3>
             <p class="num" id="completedTasks">0</p>
         </div>
 
@@ -140,50 +219,22 @@
 
     </section>
 
-    <!-- ROW 3 LEFT: EVENT PLANNER -->
     <section class="eventsCard">
 
-        <h2>Event Planner</h2>
-
-        <div class="event-form">
-            <input type="date" id="eventDate">
-
-            <input type="text" id="eventText" placeholder="Event name">
-
-            <button id="addEventBtn" type="button">Add Event</button>
+        <div class="cardHead">
+            <h2>Event Planner</h2>
+            <button id="openEventBtn" class="plusBtn" type="button" title="Add an event">+</button>
         </div>
 
         <ul id="eventList"></ul>
 
     </section>
 
-    <!-- ROW 3 RIGHT: TODO LIST -->
     <section class="todoCard">
 
-        <h2>Todo List</h2>
-
-        <div class="task-form">
-
-            <input type="text" id="taskInput" placeholder="Enter task...">
-
-            <div class="task-when">
-                <label>Date
-                    <input type="date" id="taskDate">
-                </label>
-
-                <label>From
-                    <input type="time" id="taskStart">
-                </label>
-
-                <label>To
-                    <input type="time" id="taskEnd">
-                </label>
-
-                <button id="addTaskBtn" type="button">Add</button>
-            </div>
-
-            <small id="taskError"></small>
-
+        <div class="cardHead">
+            <h2>Todo</h2>
+            <button id="openTaskBtn" class="plusBtn" type="button" title="Add a task">+</button>
         </div>
 
         <ul id="taskList"></ul>
@@ -191,6 +242,158 @@
     </section>
 
 </div>
+
+
+
+<dialog id="taskDialog" class="popup">
+
+    <div class="popupHead">
+        <h3>New task</h3>
+        <button class="closeBtn" type="button" data-close="taskDialog" title="Close">✕</button>
+    </div>
+
+    <div class="popupRow">
+
+        <input type="text" id="taskInput" class="grow" placeholder="Enter task...">
+
+        <label class="field">
+            <span>Date</span>
+            <input type="date" id="taskDate">
+        </label>
+
+        <label class="field">
+            <span>From</span>
+            <input type="time" id="taskStart">
+        </label>
+
+        <label class="field">
+            <span>To</span>
+            <input type="time" id="taskEnd">
+        </label>
+
+        <label class="field checkField">
+            <input type="checkbox" id="taskUrgent">
+            <span>Urgent</span>
+        </label>
+
+        <button id="addTaskBtn" type="button">Add</button>
+
+    </div>
+
+    <small id="taskError" class="errorText"></small>
+
+</dialog>
+
+<dialog id="eventDialog" class="popup small">
+
+    <div class="popupHead">
+        <h3>New event</h3>
+        <button class="closeBtn" type="button" data-close="eventDialog" title="Close">✕</button>
+    </div>
+
+    <div class="popupRow">
+
+        <input type="text" id="eventText" class="grow" placeholder="Event name">
+
+        <label class="field">
+            <span>Date</span>
+            <input type="date" id="eventDate">
+        </label>
+
+        <button id="addEventBtn" type="button">Add</button>
+
+    </div>
+
+</dialog>
+<dialog id="clockDialog" class="popup small">
+
+    <div class="popupHead">
+        <h3 id="clockDialogTitle">Edit</h3>
+        <button class="closeBtn" type="button" data-close="clockDialog" title="Close">✕</button>
+    </div>
+
+    <div id="timerFields" class="popupRow">
+
+        <label class="field">
+            <span>Hours</span>
+            <input type="number" id="timerH" min="0" max="99">
+        </label>
+
+        <label class="field">
+            <span>Min</span>
+            <input type="number" id="timerM" min="0" max="59">
+        </label>
+
+        <label class="field">
+            <span>Sec</span>
+            <input type="number" id="timerS" min="0" max="59">
+        </label>
+
+    </div>
+
+    <div id="sessionFields" class="popupRow">
+
+        <input type="text" id="sessionName" class="grow" maxlength="30" placeholder="Session name">
+
+        <label class="field">
+            <span>Minutes per session</span>
+            <input type="number" id="sessionMin" min="1" max="600">
+        </label>
+
+    </div>
+
+    <div class="popupFoot">
+        <button id="saveClockBtn" type="button">Save</button>
+        <button id="resetCountBtn" class="ghost" type="button" hidden>Reset today's count</button>
+    </div>
+
+    <small id="clockError" class="errorText"></small>
+
+</dialog>
+
+<dialog id="themeDialog" class="popup side">
+
+    <div class="popupHead">
+        <h3>Customize theme</h3>
+        <button class="closeBtn" type="button" id="themeCloseBtn" title="Cancel">✕</button>
+    </div>
+
+    <p class="hint">Pick your own colors. The page changes live, and the flip clock follows your card and text colors.</p>
+
+    <label class="field baseField">
+        <span>Start from</span>
+        <select id="themeBase">
+            <option value="">Choose a theme...</option>
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="ocean">Ocean</option>
+            <option value="sunset">Sunset</option>
+        </select>
+    </label>
+
+    <div class="colorGrid">
+        <label class="colorField"><span>Page background</span><input type="color" data-key="bg"></label>
+        <label class="colorField"><span>Cards</span><input type="color" data-key="card"></label>
+        <label class="colorField"><span>List rows</span><input type="color" data-key="item"></label>
+        <label class="colorField"><span>Input boxes</span><input type="color" data-key="input"></label>
+        <label class="colorField"><span>Text</span><input type="color" data-key="text"></label>
+        <label class="colorField"><span>Soft text</span><input type="color" data-key="muted"></label>
+        <label class="colorField"><span>Accent / buttons</span><input type="color" data-key="accent"></label>
+        <label class="colorField"><span>Highlight</span><input type="color" data-key="green"></label>
+    </div>
+
+    <label class="field rangeField">
+        <span>Corners</span>
+        <input type="range" id="themeRadius" min="0" max="40" value="25">
+        <output id="themeRadiusOut">25px</output>
+    </label>
+
+    <div class="popupFoot">
+        <button id="themeSaveBtn" type="button">Save theme</button>
+        <button id="themeCancelBtn" class="ghost" type="button">Cancel</button>
+    </div>
+
+</dialog>
 
 <script src="script.js"></script>
 
