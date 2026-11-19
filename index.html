@@ -52,10 +52,12 @@
 
         <div class="musicTop">
             <input type="text" id="musicInput"
-                   placeholder="Paste a YouTube video, playlist or .mp3 link">
+                   placeholder="Paste a YouTube, Spotify or .mp3 link">
+            <button id="musicLoadBtn" class="iconBtn loadBtn" data-icon="load" type="button" title="Load this link"></button>
+            <button id="spotifyExpandBtn" class="smallBtn ghost" type="button" hidden>Show tracks</button>
         </div>
 
-        <div class="musicBody">
+        <div class="musicBody" id="musicBody">
 
             <div class="art">
                 <span class="note">♪</span>
@@ -83,10 +85,17 @@
 
         </div>
 
-        <div class="volRow">
+        <div class="volRow" id="volRow">
             <span>Vol:</span>
             <button id="muteBtn" class="iconBtn small" data-icon="vol" type="button" title="Mute"></button>
             <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume">
+        </div>
+
+        <div class="spotifyBox" id="spotifyBox" hidden>
+            <div class="spotifySlot">
+                <div class="spotifyHolder" id="spotifyHolder"></div>
+            </div>
+            <small class="spotifyNote">Press play in the Spotify box. Log in to Spotify in this browser to hear full songs.</small>
         </div>
 
         <audio id="audio" loop></audio>
@@ -151,7 +160,7 @@
 
     </section>
 
-    <section class="mediaCard">
+    <section class="mediaCard" id="mediaCard">
 
         <img id="mediaImg" src="images/profile.gif" alt="GIF">
 
@@ -166,8 +175,15 @@
         </div>
 
         <div class="mediaBtns">
-            <button id="mediaMuteBtn" type="button" data-icon="mute" title="Unmute / mute" hidden></button>
             <button id="mediaEditBtn" type="button" title="Change GIF / video">✎</button>
+        </div>
+
+        <div class="mediaControls" id="mediaControls" hidden>
+            <button id="mediaPlayBtn" class="iconBtn small" data-icon="pause" type="button" title="Pause"></button>
+            <span id="mediaTimeNow" class="mTime">0:00</span>
+            <input type="range" id="mediaSeek" min="0" max="1000" value="0" aria-label="Go to a point in the video">
+            <span id="mediaTimeTotal" class="mTime">0:00</span>
+            <button id="mediaMuteBtn" class="iconBtn small" data-icon="mute" type="button" title="Turn the sound on"></button>
         </div>
 
         <div id="mediaPanel" class="mediaPanel" hidden>
@@ -244,7 +260,6 @@
 </div>
 
 
-
 <dialog id="taskDialog" class="popup">
 
     <div class="popupHead">
@@ -305,6 +320,7 @@
     </div>
 
 </dialog>
+
 <dialog id="clockDialog" class="popup small">
 
     <div class="popupHead">
