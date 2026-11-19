@@ -4,7 +4,6 @@ function pad(n){
     return String(n).padStart(2,"0");
 }
 
-
 function formatDate(iso){
     if(!iso) return "—";
     const [y,m,d] = iso.split("-");
@@ -70,7 +69,8 @@ const ICONS = {
     prev:  '<path d="M6 6h2v12H6zM20 6v12L9.5 12z"/>',
     next:  '<path d="M16 6h2v12h-2zM4 6l10.5 6L4 18z"/>',
     vol:   '<path d="M3 9v6h4l5 4V5L7 9H3z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
-    mute:  '<path d="M3 9v6h4l5 4V5L7 9H3z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
+    mute:  '<path d="M3 9v6h4l5 4V5L7 9H3z"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    load:  '<path d="M5 12h13M12 5.5l6.5 6.5-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
 };
 
 function icon(name){
@@ -88,7 +88,7 @@ const themeDialog = $("themeDialog");
 const THEME_KEYS   = ["bg","card","item","input","text","muted","accent","green"];
 const PRESET_NAMES = ["dark","light","ocean","sunset"];
 
-let customTheme = loadObj("customTheme", null);    
+let customTheme = loadObj("customTheme", null);
 
 function luminance(hex){
     const n = parseInt(hex.slice(1), 16);
@@ -161,7 +161,7 @@ const radiusInput = $("themeRadius");
 const radiusOut   = $("themeRadiusOut");
 const themeBase   = $("themeBase");
 
-let themeBefore = "dark";     
+let themeBefore = "dark";
 let themeSaved  = false;
 
 function fillEditor(t){
@@ -254,6 +254,7 @@ $("themeEditBtn").addEventListener("click", openThemeEditor);
     applyTheme(saved);
 })();
 
+
 const nameInput = $("nameInput");
 
 let userName = localStorage.getItem("userName") || "Tenzy";
@@ -284,6 +285,7 @@ nameInput.addEventListener("change", () => {
 
     catSay("greet", "Nice to meet you, {name}!");
 });
+
 
 const catImg    = $("catImg");
 const quoteText = $("quoteText");
@@ -427,14 +429,12 @@ function timeGreeting(){
 
 let lastCatAt    = 0;
 let lastQuote    = "";
-let catReady     = false;       
-
+let catReady     = false;
 
 for(let i = 1; i <= 12; i++){
     const img = new Image();
     img.src = `images/cat/cat${i}.png`;
 }
-
 
 function catSay(mood, forcedText){
 
@@ -453,7 +453,6 @@ function catSay(mood, forcedText){
     quoteText.textContent = text.replace("{name}", userName);
     catImg.src = `images/cat/cat${pick(m.sprites)}.png`;
 
-
     catImg.classList.remove("pop");
     quoteText.classList.remove("swap");
     void catImg.offsetWidth;
@@ -461,11 +460,9 @@ function catSay(mood, forcedText){
     quoteText.classList.add("swap");
 }
 
-
 $("catBtn").addEventListener("click", () => {
     catSay(pick(["play","play","chill","friend","study","sleepy"]));
 });
-
 
 setInterval(() => {
 
@@ -477,7 +474,6 @@ setInterval(() => {
     catSay(late ? "sleepy" : pick(["chill","friend","study","play","sleepy"]));
 
 }, 5000);
-
 
 
 let tasks = loadList("tasks").map(t => ({
@@ -689,7 +685,6 @@ function deleteTask(id){
 $("addTaskBtn").addEventListener("click", addTask);
 
 
-
 let events = loadList("events").map(e => ({
     id:   e.id || newId(),
     date: e.date,
@@ -794,7 +789,6 @@ document.querySelectorAll("[data-close]").forEach(btn => {
     });
 });
 
-
 taskDialog.addEventListener("keydown", e => {
     if(e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "checkbox"){
         e.preventDefault();
@@ -811,7 +805,6 @@ eventDialog.addEventListener("keydown", e => {
 
 
 const digitEls = document.querySelectorAll(".digit");
-
 
 digitEls.forEach(el => {
     el.innerHTML = `
@@ -844,12 +837,12 @@ function setDigit(el, value, animate){
         return;
     }
 
-    upper.textContent = value;   
-    fTop.textContent  = old;     
-    fBot.textContent  = value;   
-    lower.textContent = old;     
+    upper.textContent = value;
+    fTop.textContent  = old;
+    fBot.textContent  = value;
+    lower.textContent = old;
 
-    void el.offsetWidth;         
+    void el.offsetWidth;
     el.classList.add("flipping");
 
     el.flipTimer = setTimeout(() => {
@@ -864,9 +857,9 @@ function setDigits(str, animate){
 
 
 const clockSettings = loadObj("clockSettings", {
-    timerSec:    300,        
+    timerSec:    300,
     sessionName: "Study",
-    sessionMin:  25        
+    sessionMin:  25
 });
 
 let sessionsToday = loadObj("sessionsToday", { date: todayISO(), count: 0 });
@@ -883,7 +876,8 @@ const MODES = ["clock","stopwatch","timer","session"];
 let clockMode = localStorage.getItem("clockMode");
 if(!MODES.includes(clockMode)) clockMode = "clock";
 
-let is24h = localStorage.getItem("clock24") !== "false";     
+let is24h = localStorage.getItem("clock24") !== "false";
+
 
 function newCounter(){
     return { running:false, acc:0, start:0, active:false };
@@ -906,12 +900,12 @@ function resetCounter(c){
     c.active  = false;
 }
 
-
 function durationMs(mode){
     if(mode === "timer")   return clockSettings.timerSec * 1000;
     if(mode === "session") return clockSettings.sessionMin * 60000;
     return 0;
 }
+
 
 let audioCtx = null;
 
@@ -1076,9 +1070,8 @@ function finishCountdown(mode){
     refreshClockUI();
 }
 
-/* ---------- buttons ---------- */
 
-let instantNext = false;      // true = switch digits without the flip animation
+let instantNext = false;
 
 $("modeSelect").addEventListener("change", () => {
     clockMode = $("modeSelect").value;
@@ -1096,11 +1089,11 @@ $("clockStartBtn").addEventListener("click", () => {
     const c = ctr[clockMode];
     if(!c) return;
 
-    if(c.running){                                   
+    if(c.running){
         c.acc = elapsed(c);
         c.running = false;
     }
-    else{                                            
+    else{
         const startingFresh = c.acc === 0;
 
         c.running = true;
@@ -1256,9 +1249,6 @@ function tick(){
 
 setInterval(tick, 250);
 
-/* =========================================================
-   YOUTUBE  (shared by the music player and the video box)
-   ========================================================= */
 
 const FILE_MESSAGE =
     "YouTube won't play when index.html is opened by double-clicking it. " +
@@ -1306,7 +1296,6 @@ window.onYouTubeIframeAPIReady = () => {
     waiting.forEach(fn => fn());
 };
 
-// works out what a YouTube link is: a video, a playlist, or both
 function getYouTubeInfo(url){
 
     let u;
@@ -1336,28 +1325,38 @@ function getYouTubeInfo(url){
 
     if(!id && !list) return null;
 
-    // YouTube's automatic "Mix" playlists (RD...) can't be embedded
-    const isMix = /^RD/.test(list);
+    const seed = list.match(/^RD(?:AMVM)?([\w-]{11})$/);
+    if(!id && seed) id = seed[1];
 
     return {
-        id:         id || "",
-        list:       isMix ? "" : list,
-        mixIgnored: isMix && !!id,
-        mixOnly:    isMix && !id,
-        index:      Math.max(0, (parseInt(u.searchParams.get("index"), 10) || 1) - 1)
+        id:    id || "",
+        list:  list,
+        index: Math.max(0, (parseInt(u.searchParams.get("index"), 10) || 1) - 1)
     };
 }
 
+function getSpotifyInfo(raw){
 
-/* =========================================================
-   MUSIC PLAYER
-   Paste a YouTube video, a YouTube PLAYLIST, or a direct audio
-   link (.mp3 ...), then press play (or Enter).
-   ========================================================= */
+    const text = raw.trim();
+
+    const uri = text.match(/^spotify:(playlist|album|track|artist|show|episode):([A-Za-z0-9]+)$/);
+    if(uri) return { type:uri[1], id:uri[2] };
+
+    let u;
+    try{ u = new URL(/^https?:\/\//i.test(text) ? text : "https://" + text); }
+    catch{ return null; }
+
+    if(!/(^|\.)spotify\.com$/.test(u.hostname)) return null;
+
+    const m = u.pathname.match(/\/(playlist|album|track|artist|show|episode)\/([A-Za-z0-9]+)/);
+
+    return m ? { type:m[1], id:m[2] } : null;
+}
 
 const audio      = $("audio");
 const musicInput = $("musicInput");
 const musicBtn   = $("musicBtn");
+const musicLoad  = $("musicLoadBtn");
 const prevBtn    = $("prevBtn");
 const nextBtn    = $("nextBtn");
 const muteBtn    = $("muteBtn");
@@ -1366,15 +1365,25 @@ const seekInput  = $("seek");
 const musicTitle = $("musicTitle");
 const musicSub   = $("musicSub");
 const artImg     = $("musicArtImg");
+const musicBody  = $("musicBody");
+const volRow     = $("volRow");
 
-const AUDIO_ERROR = "Couldn't play that link. Use a YouTube link or a direct .mp3 link.";
+const spotifyBox       = $("spotifyBox");
+const spotifyHolder    = $("spotifyHolder");
+const spotifyExpandBtn = $("spotifyExpandBtn");
+
+const AUDIO_ERROR = "Couldn't play that link. Use a YouTube link, a Spotify link or a direct .mp3 link.";
 
 const music = {
-    mode:        null,       
-    url:         "",        
+    mode:        null,
+    url:         "",
     isPlaylist:  false,
-    ready:       false,     
+    ready:       false,
     loopSet:     false,
+    listChecked: false,
+    fellBack:    false,
+    skips:       0,
+    info:        null,
     baseSub:     "",
     msgActive:   false,
     muted:       localStorage.getItem("musicMuted") === "true"
@@ -1435,10 +1444,46 @@ function setNowPlaying(title, sub, artUrl){
 }
 
 function updateTransport(){
-    prevBtn.disabled = !music.mode;
+    prevBtn.disabled = !(music.mode === "audio" || music.mode === "youtube");
     nextBtn.disabled = !(music.mode === "youtube" && music.isPlaylist);
 }
 
+function setSpotifyMode(on){
+
+    musicBody.hidden = on;
+    volRow.hidden    = on;
+
+    spotifyBox.hidden       = !on;
+    spotifyExpandBtn.hidden = !on;
+
+    if(!on){
+        spotifyBox.classList.remove("expanded");
+        spotifyExpandBtn.textContent = "Show tracks";
+        spotifyHolder.innerHTML = "";
+    }
+}
+
+function playSpotify(info){
+
+    spotifyHolder.innerHTML = "";
+
+    const frame = document.createElement("iframe");
+
+    frame.src = `https://open.spotify.com/embed/${info.type}/${info.id}?utm_source=generator&theme=0`;
+    frame.title = "Spotify player";
+    frame.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+
+    spotifyHolder.appendChild(frame);
+
+    setSpotifyMode(true);
+}
+
+spotifyExpandBtn.addEventListener("click", () => {
+
+    const open = spotifyBox.classList.toggle("expanded");
+
+    spotifyExpandBtn.textContent = open ? "Hide tracks" : "Show tracks";
+});
 
 function applyVolume(){
 
@@ -1481,32 +1526,57 @@ muteBtn.addEventListener("click", () => {
     applyVolume();
 });
 
-
 function makeYtPlaceholder(){
     document.querySelector(".ytHolder").innerHTML = '<div id="ytPlayer"></div>';
 }
 
 function youTubeError(code){
 
-    if(music.isPlaylist && (code === 101 || code === 150) && ytPlayer && ytPlayer.nextVideo){
+    if(music.isPlaylist && (code === 101 || code === 150) && ytPlayer && ytPlayer.nextVideo && music.skips < 5){
+        music.skips++;
         musicMsg("Skipped a video that can't be played here.");
         ytPlayer.nextVideo();
         return;
     }
 
-    if(musicTitle.textContent === "Loading...") setNowPlaying("Nothing playing", "", "");
+    if(music.isPlaylist && music.info && music.info.id && !music.fellBack && code !== 152 && code !== 153 && ytPlayer && ytPlayer.loadVideoById){
+        music.fellBack   = true;
+        music.isPlaylist = false;
+        updateTransport();
+        musicMsg("Couldn't load that playlist, so only this video will play.");
+        ytPlayer.loadVideoById(music.info.id);
+        return;
+    }
+
+    if(ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+
+    music.mode = null;
+    updateTransport();
+    setNowPlaying("Nothing playing", "", "");
 
     if(code === 101 || code === 150){
-        musicMsg("The owner doesn't allow this video to play outside YouTube.", true);
+        musicMsg(
+            music.isPlaylist
+                ? "Too many videos in this playlist can't be played outside YouTube."
+                : "The owner doesn't allow this video to play outside YouTube.",
+            true
+        );
     }
-    else if(code === 100){
-        musicMsg("Video not found (it may be private or deleted).", true);
+    else if(code === 100 || code === 2 || code === 5){
+        musicMsg(
+            music.isPlaylist
+                ? `This playlist can't be played here (error ${code}). It may be private or deleted. Try a public playlist link.`
+                : code === 100
+                    ? "Video not found (it may be private or deleted)."
+                    : `YouTube couldn't play this link (error ${code}).`,
+            true
+        );
     }
     else if(code === 152 || code === 153){
         musicMsg(
             location.protocol === "file:"
                 ? FILE_MESSAGE
-                : "YouTube blocked this video from playing here. Try a different video or an .mp3 link.",
+                : "YouTube blocked this from playing here. Try a different link or an .mp3 link.",
             true
         );
     }
@@ -1522,11 +1592,15 @@ function playYouTube(info){
 
     withYouTubeAPI(() => {
 
-        music.isPlaylist = !!info.list;
-        music.loopSet    = false;
+        music.isPlaylist  = !!info.list;
+        music.loopSet     = false;
+        music.listChecked = false;
+        music.fellBack    = false;
+        music.skips       = 0;
+        music.info        = info;
         updateTransport();
 
-        if(ytPlayer && music.ready){
+        if(ytPlayer && music.ready && !(info.list && info.id)){
 
             if(info.list){
                 ytPlayer.loadPlaylist({ list:info.list, listType:"playlist", index:info.index });
@@ -1554,13 +1628,13 @@ function playYouTube(info){
         if(info.list){
             vars.list     = info.list;
             vars.listType = "playlist";
-            vars.index    = info.index;
+            if(!info.id) vars.index = info.index;
         }
 
         ytPlayer = new YT.Player("ytPlayer", {
             width:  "200",
             height: "200",
-            videoId: info.list ? undefined : info.id,
+            videoId: info.id || undefined,
             playerVars: vars,
 
             events: {
@@ -1573,22 +1647,38 @@ function playYouTube(info){
 
                 onStateChange: e => {
 
-                    if(e.data === 1){                        
+                    if(e.data === 1){
                         setPlayIcon(true);
                         clearMusicMsg();
+                        music.skips = 0;
 
-                      
                         if(music.isPlaylist && !music.loopSet && ytPlayer.setLoop){
                             music.loopSet = true;
                             ytPlayer.setLoop(true);
                         }
 
+                        if(!music.listChecked){
+                            music.listChecked = true;
+
+                            setTimeout(() => {
+                                if(music.mode !== "youtube" || !ytPlayer || !ytPlayer.getPlaylist) return;
+
+                                const list = ytPlayer.getPlaylist();
+                                const real = !!(list && list.length);
+
+                                if(real !== music.isPlaylist){
+                                    music.isPlaylist = real;
+                                    updateTransport();
+                                }
+                            }, 3000);
+                        }
+
                         updateMusicUI();
                     }
 
-                    if(e.data === 2) setPlayIcon(false);     
+                    if(e.data === 2) setPlayIcon(false);
 
-                    if(e.data === 0 && !music.isPlaylist){   
+                    if(e.data === 0 && !music.isPlaylist){
                         ytPlayer.seekTo(0);
                         ytPlayer.playVideo();
                     }
@@ -1605,7 +1695,6 @@ function playYouTube(info){
     });
 }
 
-
 function watchYouTubeStart(){
 
     let tries = 0;
@@ -1614,7 +1703,7 @@ function watchYouTubeStart(){
 
         tries++;
 
-        if(music.mode !== "youtube"){                
+        if(music.mode !== "youtube"){
             clearInterval(timer);
             return;
         }
@@ -1622,12 +1711,12 @@ function watchYouTubeStart(){
         const ready = music.ready && ytPlayer && ytPlayer.getPlayerState;
         const state = ready ? ytPlayer.getPlayerState() : null;
 
-        if(state === 1){                             
+        if(state === 1){
             clearInterval(timer);
             return;
         }
 
-        if(tries === 8 && state !== 3){              
+        if(tries === 8 && state !== 3){
             musicMsg(
                 ready
                     ? "Press play again to start (your browser blocked autoplay)."
@@ -1641,7 +1730,6 @@ function watchYouTubeStart(){
     }, 500);
 }
 
-
 function stopMusic(){
 
     audio.pause();
@@ -1653,6 +1741,8 @@ function stopMusic(){
 
     if(ytPlayer && music.ready && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
 
+    setSpotifyMode(false);
+
     music.mode = null;
     music.url  = "";
     music.isPlaylist = false;
@@ -1663,13 +1753,27 @@ function stopMusic(){
 
 function startMusicLink(raw){
 
-    let url = raw.trim();
-
-    if(!/^https?:\/\//i.test(url)) url = "https://" + url;
+    const text = raw.trim();
 
     stopMusic();
     musicMsg("");
     setNowPlaying("Nothing playing", "", "");
+
+    const spotify = getSpotifyInfo(text);
+
+    if(spotify){
+        music.mode = "spotify";
+        music.url  = text;
+        localStorage.setItem("musicLink", text);
+
+        playSpotify(spotify);
+        updateTransport();
+        return;
+    }
+
+    let url = text;
+
+    if(!/^https?:\/\//i.test(url)) url = "https://" + url;
 
     let u;
     try{ u = new URL(url); }
@@ -1678,24 +1782,29 @@ function startMusicLink(raw){
         return;
     }
 
-    if(/(^|\.)(spotify|soundcloud|deezer)\.com$/.test(u.hostname) || u.hostname === "music.apple.com"){
-        musicMsg("Spotify / SoundCloud links can't be played here. Use YouTube or a direct .mp3 link.", true);
+    if(/(^|\.)spotify\.com$/.test(u.hostname)){
+        musicMsg("Paste a link to a Spotify song, album, playlist, artist or podcast.", true);
+        return;
+    }
+
+    if(/(^|\.)spotify\.link$|(^|\.)spotify\.app\.link$/.test(u.hostname)){
+        musicMsg("Short Spotify links can't be read. Open it in your browser and copy the address from the top.", true);
+        return;
+    }
+
+    if(/(^|\.)(soundcloud|deezer)\.com$/.test(u.hostname) || u.hostname === "music.apple.com"){
+        musicMsg("SoundCloud, Deezer and Apple Music links can't be played here. Use YouTube, Spotify or an .mp3 link.", true);
         return;
     }
 
     const yt = getYouTubeInfo(url);
-
-    if(yt && yt.mixOnly){
-        musicMsg("YouTube auto-mixes can't be played. Use a normal playlist or a video link.", true);
-        return;
-    }
 
     if(yt && location.protocol === "file:"){
         musicMsg(FILE_MESSAGE, true);
         return;
     }
 
-    music.url = raw.trim();
+    music.url = text;
     localStorage.setItem("musicLink", music.url);
 
     if(yt){
@@ -1709,7 +1818,7 @@ function startMusicLink(raw){
             yt.id ? `https://i.ytimg.com/vi/${yt.id}/mqdefault.jpg` : ""
         );
 
-        musicMsg(yt.mixIgnored ? "Mix playlists can't be played, so only this video will play." : "Loading...");
+        musicMsg("Loading...");
 
         playYouTube(yt);
         watchYouTubeStart();
@@ -1767,6 +1876,18 @@ function handleMusic(){
 
 musicBtn.addEventListener("click", handleMusic);
 
+musicLoad.addEventListener("click", () => {
+
+    const raw = musicInput.value.trim();
+
+    if(raw === ""){
+        musicMsg("Paste a link first.", true);
+        return;
+    }
+
+    startMusicLink(raw);
+});
+
 musicInput.addEventListener("keydown", e => {
     if(e.key === "Enter") handleMusic();
 });
@@ -1799,7 +1920,6 @@ audio.addEventListener("error", () => {
         setPlayIcon(false);
     }
 });
-
 
 function updateMusicUI(){
 
@@ -1870,10 +1990,16 @@ seekInput.addEventListener("change", () => {
 setInterval(updateMusicUI, 500);
 
 
+const mediaCard     = $("mediaCard");
 const mediaImg      = $("mediaImg");
 const mediaVideo    = $("mediaVideo");
 const mediaYTWrap   = $("mediaYTWrap");
 const mediaEmpty    = $("mediaEmpty");
+const mediaControls = $("mediaControls");
+const mediaPlayBtn  = $("mediaPlayBtn");
+const mediaSeek     = $("mediaSeek");
+const mediaTimeNow  = $("mediaTimeNow");
+const mediaTimeTotal = $("mediaTimeTotal");
 const mediaMuteBtn  = $("mediaMuteBtn");
 const mediaEditBtn  = $("mediaEditBtn");
 const mediaPanel    = $("mediaPanel");
@@ -1887,12 +2013,25 @@ const VIDEO_EXT = /\.(mp4|webm|ogv|ogg|mov|m4v)(\?|#|$)/i;
 let mediaYT = null;
 let mediaYTReady = false;
 let mediaMuted = true;
-let mediaToken = 0;           
-let mediaObjectUrl = "";      
+let mediaToken = 0;
+let mediaObjectUrl = "";
+let mediaSeeking = false;
+
+function mediaKind(){
+    if(!mediaVideo.hidden)  return "video";
+    if(!mediaYTWrap.hidden) return "youtube";
+    return "image";
+}
 
 function setMediaPanel(open){
     mediaPanel.hidden = !open;
     mediaEditBtn.textContent = open ? "✕" : "✎";
+}
+
+function setMediaPlayIcon(playing){
+    mediaPlayBtn.innerHTML = icon(playing ? "pause" : "play");
+    mediaPlayBtn.title = playing ? "Pause" : "Play";
+    mediaControls.classList.toggle("paused", !playing);
 }
 
 function applyMediaMute(){
@@ -1907,6 +2046,89 @@ function applyMediaMute(){
     mediaMuteBtn.innerHTML = icon(mediaMuted ? "mute" : "vol");
     mediaMuteBtn.title = mediaMuted ? "Turn the sound on" : "Mute";
 }
+
+function toggleMediaPlay(){
+
+    const kind = mediaKind();
+
+    if(kind === "video"){
+        if(mediaVideo.paused) mediaVideo.play().catch(() => {});
+        else mediaVideo.pause();
+    }
+    else if(kind === "youtube" && mediaYT && mediaYTReady && mediaYT.getPlayerState){
+
+        const state = mediaYT.getPlayerState();
+
+        if(state === 1 || state === 3) mediaYT.pauseVideo();
+        else mediaYT.playVideo();
+    }
+}
+
+function mediaTimes(){
+
+    const kind = mediaKind();
+
+    if(kind === "video"){
+        return {
+            cur: mediaVideo.currentTime || 0,
+            dur: isFinite(mediaVideo.duration) ? mediaVideo.duration : 0
+        };
+    }
+
+    if(kind === "youtube" && mediaYT && mediaYTReady && mediaYT.getCurrentTime){
+        return { cur: mediaYT.getCurrentTime() || 0, dur: mediaYT.getDuration() || 0 };
+    }
+
+    return { cur:0, dur:0 };
+}
+
+function updateMediaUI(){
+
+    if(mediaControls.hidden) return;
+
+    const { cur, dur } = mediaTimes();
+
+    if(!mediaSeeking){
+        mediaSeek.value = dur ? cur / dur * 1000 : 0;
+        mediaTimeNow.textContent = fmtTime(cur);
+    }
+
+    mediaTimeTotal.textContent = fmtTime(dur);
+}
+
+setInterval(updateMediaUI, 250);
+
+mediaPlayBtn.addEventListener("click", toggleMediaPlay);
+
+[mediaControls, mediaPanel, document.querySelector(".mediaBtns")].forEach(el => {
+    el.addEventListener("click", e => e.stopPropagation());
+});
+
+mediaCard.addEventListener("click", () => {
+
+    if(mediaControls.hidden) return;
+
+    toggleMediaPlay();
+});
+
+mediaSeek.addEventListener("input", () => {
+    mediaSeeking = true;
+    mediaTimeNow.textContent = fmtTime(mediaTimes().dur * mediaSeek.value / 1000);
+});
+
+mediaSeek.addEventListener("change", () => {
+
+    const t = mediaTimes().dur * mediaSeek.value / 1000;
+    const kind = mediaKind();
+
+    if(kind === "video") mediaVideo.currentTime = t;
+    else if(kind === "youtube" && mediaYT && mediaYTReady) mediaYT.seekTo(t, true);
+
+    mediaSeeking = false;
+});
+
+mediaVideo.addEventListener("play",  () => setMediaPlayIcon(true));
+mediaVideo.addEventListener("pause", () => setMediaPlayIcon(false));
 
 function stopMedia(){
 
@@ -1935,7 +2157,7 @@ function startMediaYouTube(id){
 
     withYouTubeAPI(() => {
 
-        if(token !== mediaToken) return;            
+        if(token !== mediaToken) return;
 
         const vars = {
             autoplay:1, mute:1, controls:0, loop:1, playlist:id,
@@ -1955,6 +2177,11 @@ function startMediaYouTube(id){
                     mediaYTReady = true;
                     applyMediaMute();
                     e.target.playVideo();
+                },
+
+                onStateChange: e => {
+                    if(e.data === 1 || e.data === 3) setMediaPlayIcon(true);
+                    if(e.data === 2) setMediaPlayIcon(false);
                 },
 
                 onError: e => {
@@ -1985,12 +2212,21 @@ function showMedia(type, src){
 
     stopMedia();
 
-    mediaMuted = true;                             
-    mediaEmpty.hidden   = true;
-    mediaImg.hidden     = type !== "image";
-    mediaVideo.hidden   = type !== "video";
-    mediaYTWrap.hidden  = type !== "youtube";
-    mediaMuteBtn.hidden = type === "image";
+    mediaMuted = true;
+    mediaSeeking = false;
+
+    mediaEmpty.hidden    = true;
+    mediaImg.hidden      = type !== "image";
+    mediaVideo.hidden    = type !== "video";
+    mediaYTWrap.hidden   = type !== "youtube";
+    mediaControls.hidden = type === "image";
+
+    mediaCard.classList.toggle("hasVideo", type !== "image");
+
+    mediaSeek.value = 0;
+    mediaTimeNow.textContent   = "0:00";
+    mediaTimeTotal.textContent = "0:00";
+    setMediaPlayIcon(type !== "image");
 
     if(type === "image"){
         mediaImg.src = src;
@@ -2057,13 +2293,11 @@ function testVideo(src){
     });
 }
 
-
 function normalizeMediaLink(raw){
 
     let url = raw.trim();
 
     if(!/^https?:\/\//i.test(url)) url = "https://" + url;
-
 
     if(location.protocol === "https:") url = url.replace(/^http:\/\//i, "https://");
 
@@ -2119,7 +2353,6 @@ async function useMediaLink(){
             "Couldn't load that. Right-click the GIF > \"Copy image address\" and paste that link.";
     }
 }
-
 
 mediaEditBtn.addEventListener("click", () => {
     setMediaPanel(mediaPanel.hidden);
@@ -2181,6 +2414,7 @@ mediaMuteBtn.addEventListener("click", () => {
     mediaMuted = !mediaMuted;
     applyMediaMute();
 });
+
 mediaImg.addEventListener("error", () => {
 
     if(mediaImg.getAttribute("src") !== DEFAULT_MEDIA.src){
