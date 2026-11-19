@@ -313,10 +313,74 @@ body{
     gap:12px;
 }
 
+.musicTop{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
 .musicTop input{
-    width:100%;
+    flex:1;
+    min-width:0;
     padding:10px 14px;
     border-radius:999px;
+}
+
+.musicTop .loadBtn{
+    flex:none;
+    background:var(--accent);
+    color:var(--on-accent);
+}
+
+.musicTop .loadBtn:hover:not(:disabled){
+    background:var(--accent);
+    filter:brightness(1.12);
+}
+
+.musicTop .smallBtn{
+    flex:none;
+    white-space:nowrap;
+}
+
+.spotifyBox{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.spotifySlot{
+    position:relative;
+    height:152px;
+}
+
+.spotifyHolder{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:152px;
+    z-index:30;
+
+    overflow:hidden;
+    border-radius:12px;
+    background:var(--item);
+}
+
+.spotifyHolder iframe{
+    width:100%;
+    height:100%;
+    border:0;
+}
+
+.spotifyBox.expanded .spotifyHolder{
+    height:352px;
+    box-shadow:0 20px 50px rgba(0,0,0,.55);
+}
+
+.spotifyNote{
+    font-size:12px;
+    line-height:1.3;
+    color:var(--muted);
 }
 
 .musicBody{
@@ -838,10 +902,64 @@ body{
     position:absolute;
     top:10px;
     right:10px;
-    z-index:4;
+    z-index:6;
 
     display:flex;
     gap:8px;
+}
+
+.mediaCard.hasVideo{
+    cursor:pointer;
+}
+
+.mediaControls{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:4;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:28px 12px 10px;
+
+    background:linear-gradient(to top, rgba(0,0,0,.75), transparent);
+    color:#fff;
+
+    opacity:0;
+    transition:opacity .2s;
+    cursor:default;
+}
+
+.mediaCard:hover .mediaControls,
+.mediaCard:focus-within .mediaControls,
+.mediaControls.paused{
+    opacity:1;
+}
+
+@media (hover:none){
+    .mediaControls{
+        opacity:1;
+    }
+}
+
+.mediaControls .iconBtn{
+    flex:none;
+    color:#fff;
+}
+
+.mediaControls input[type="range"]{
+    flex:1;
+    min-width:0;
+}
+
+.mTime{
+    flex:none;
+    font-size:12px;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
 }
 
 .mediaBtns button{
@@ -865,7 +983,7 @@ body{
 .mediaPanel{
     position:absolute;
     inset:0;
-    z-index:3;
+    z-index:5;
 
     overflow:auto;
 
